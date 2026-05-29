@@ -1,0 +1,6 @@
+@TallerAutonova.API_HostAddress = http://localhost:5278
+
+GET {{TallerAutonova.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

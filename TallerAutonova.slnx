@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="TallerAutonova.API/TallerAutonova.API.csproj" />
+  <Project Path="TallerAutonova.DataAccess/TallerAutonova.DataAccess.csproj" />
+  <Project Path="TallerAutonova.Domain/TallerAutonova.Domain.csproj" />
+</Solution>
