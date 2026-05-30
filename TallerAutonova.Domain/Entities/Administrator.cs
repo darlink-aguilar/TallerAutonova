@@ -8,8 +8,8 @@
         public string Contraseña { get; set; } = string.Empty;
 
         // Navigation Property
-        //public ICollection<User> Users { get; set; } = new List<User>();
-        //public ICollection<Part> Parts { get; set; } = new List<Part>();
+        public ICollection<User> Users { get; set; } = new List<User>();
+        public ICollection<Part> Parts { get; set; } = new List<Part>();
 
     }
 }

@@ -3,6 +3,6 @@
     public class Mechanic : User
     {
         // Navigation Property
-        //public ICollection<Part> Parts { get; set; } = new List<Part>();
+        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }
