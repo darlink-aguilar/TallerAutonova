@@ -1,13 +1,12 @@
 ﻿namespace TallerAutonova.Domain.Entities
 {
-    public class Administrador
+    public class Part
     {
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
-        public string Usuari { get; set; } = string.Empty; // Nombre de usuario 
-        public string Contraseña { get; set; } = string.Empty;
+        public int Cantidad { get; set; }
+        public int StockMin{ get; set; } 
 
         // Navigation Property
-
     }
 }

@@ -1,9 +1,9 @@
 ﻿namespace TallerAutonova.Domain.Entities
 {
-    public class Historial_Mantenimiento
+    public class MaintenanceHistory
     {
         public int Id { get; set; }
-        public DateTime Fecha { get; set; } // En el diagrama esta como Time
+        public DateTime Fecha { get; set; } 
         public string Observaciones { get; set; } = string.Empty; 
 
         // Navigation Property

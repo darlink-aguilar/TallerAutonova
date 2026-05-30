@@ -1,6 +1,6 @@
 ﻿namespace TallerAutonova.Domain.Entities
 {
-    public class Recepcionista : Usuario
+    public class Receptionist : User
     {
     }
 }
