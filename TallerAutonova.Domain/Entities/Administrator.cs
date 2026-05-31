@@ -3,9 +3,9 @@
     public class Administrator
     {
         public int Id { get; set; }
-        public string Nombre { get; set; } = string.Empty;
-        public string Correo { get; set; } = string.Empty; // Nombre de usuario 
-        public string Contraseña { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty; // Nombre de usuario 
+        public string Password { get; set; } = string.Empty;
 
         // Navigation Property
         public ICollection<User> Users { get; set; } = new List<User>();

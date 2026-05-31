@@ -3,11 +3,11 @@
     public class Owner
     {
         public int Id { get; set; }  
-        public string Nombre { get; set; } = string.Empty;
-        public string Telefono { get; set; } = string.Empty;
-        // Navigation Property
+        public string  Name { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
 
-        public Vehicle Vehicle { get; set; } = null!;
+        // Navigation Property
+        public ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
 
     }
 }
