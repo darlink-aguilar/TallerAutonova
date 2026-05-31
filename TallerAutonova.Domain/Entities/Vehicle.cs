@@ -10,11 +10,12 @@
         public bool State { get; set; } = true; // Deberia ser booleano 
         public int Year { get; set; }
         public int OwnerId { get; set; } // FK
+        public int MaintenanceHistoryId { get; set; } // FK (1:1)
 
         // Navigation Property
         public Owner Owner { get; set; } = null!;
-        public ICollection<MaintenanceHistory> MaintenanceHistories { get; set; } = new List<MaintenanceHistory>();
-        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public MaintenanceHistory MaintenanceHistory { get; set; } = null!; // 1:1
+        public Appointment Appointment { get; set; } = null!; // 1:1
 
     }
 }
