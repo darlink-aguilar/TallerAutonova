@@ -3,9 +3,8 @@ using TallerAutonova.Domain.Enums;
 
 namespace TallerAutonova.Domain.Entities
 {
-    public class User 
+    public class User : AuditBase
     {
-        public int Id { get; set; } 
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty; // Nombre de usuario 
         public string Password { get; set; } = string.Empty;
