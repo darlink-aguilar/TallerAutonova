@@ -1,8 +1,7 @@
 ﻿namespace TallerAutonova.Domain.Entities
 {
-    public class Part
+    public class Part : AuditBase
     {
-        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public int MinStock { get; set; }

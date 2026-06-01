@@ -1,7 +1,7 @@
 ﻿
 namespace TallerAutonova.Domain.Entities
 {
-    public class MechanicMaintenanceHistory
+    public class MechanicMaintenanceHistory : AuditBase
     {
 
         public int MechanicId { get; set; } // FK a Mechanic
