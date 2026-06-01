@@ -1,6 +1,15 @@
-﻿namespace TallerAutonova.Domain.Interfaces.Repositories
+﻿using TallerAutonova.Domain.Entities;
+
+namespace TallerAutonova.Domain.Interfaces.Repositories
 {
-    public interface IPartRepository
+    public interface IPartRepository : IGenericRepository<Part>
     {
+        // Specific queries
+        Task<IEnumerable<Part>> GetLowStockPartsAsync();
+        Task<IEnumerable<Part>> GetByAdministratorIdAsync(int administratorId);
+
+        // Stock management
+        Task UpdateStockAsync(int partId, int newQuantity);
+        Task<bool> HasStockAvailableAsync(int partId, int requestedQuantity);
     }
 }
