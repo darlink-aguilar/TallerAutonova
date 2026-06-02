@@ -7,7 +7,7 @@ namespace TallerAutonova.Domain.Entities
         public DateOnly Date { get; set; } 
         public TimeOnly Time { get; set; } 
         public string Description { get; set; } = string.Empty; 
-        public AppointmentStatus State { get; set; } = AppointmentStatus.Pending;
+        public AppointmentStatus Status { get; set; } = AppointmentStatus.Pending;
         public int VehicleId { get; set; } //FK (1:1)
         public int MechanicId { get; set; } // FK
         public int ReceptionistId { get; set; } // FK
