@@ -17,18 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< HEAD:TallerAutonova.API/TallerAutonova.API.csproj
-    <ProjectReference Include="..\TallerAutonova.Domain\TallerAutonova.Domain.csproj" />
-    <ProjectReference Include="..\TallerAutonova.DataAccess\TallerAutonova.DataAccess.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Mappings\" />
-    <Folder Include="Middlewares\" />
-=======
     <ProjectReference Include="..\AutoNova.Domain\AutoNova.Domain.csproj" />
     <ProjectReference Include="..\AutoNova.DataAccess\AutoNova.DataAccess.csproj" />
->>>>>>> VillaDarlink:AutoNova.API/AutoNova.API.csproj
   </ItemGroup>
 
 </Project>
