@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import authService from '../../services/authService';
+import userService, { UserResponse } from '../../services/userService';
 
 export type UserRole = 'admin' | 'mechanic' | 'receptionist';
 
@@ -7,107 +9,128 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  password: string;
   isActive: boolean;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => boolean;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   users: User[];
-  addUser: (user: Omit<User, 'id'>) => void;
-  updateUser: (id: string, updates: Partial<User>) => void;
+  loadUsers: () => Promise<void>;
+  addUser: (name: string, email: string, password: string, role: UserRole) => Promise<void>;
+  updateUser: (id: string, updates: Partial<User>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Mock users data
-const initialUsers: User[] = [
-  {
-    id: '1',
-    name: 'Administrador',
-    email: 'admin',
-    password: 'admin',
-    role: 'admin',
-    isActive: true,
-  },
-  {
-    id: '2',
-    name: 'Recepcionista',
-    email: 'recep',
-    password: '1234',
-    role: 'receptionist',
-    isActive: true,
-  },
-  {
-    id: '3',
-    name: 'Mecánico',
-    email: 'mec',
-    password: '1234',
-    role: 'mechanic',
-    isActive: true,
-  },
-];
+const mapRole = (backendRole: string): UserRole => {
+  if (backendRole === 'Administrador') return 'admin';
+  if (backendRole === 'Mecanico')      return 'mechanic';
+  if (backendRole === 'Recepcionista') return 'receptionist';
+  return 'admin';
+};
+
+const mapRoleToBackend = (role: UserRole): string => {
+  if (role === 'admin')        return 'Administrador';
+  if (role === 'mechanic')     return 'Mecanico';
+  if (role === 'receptionist') return 'Recepcionista';
+  return 'Administrador';
+};
+
+const mapUser = (u: UserResponse): User => ({
+  id: u.id, name: u.name, email: u.email,
+  role: mapRole(u.role), isActive: u.isActive,
+});
+
+// Lee localStorage de forma SÍNCRONA para que DashboardLayout tenga
+// el usuario correcto desde el primer render (evita race condition).
+const readStoredUser = (): User | null => {
+  try {
+    const saved = localStorage.getItem('autonova_current_user');
+    return saved ? JSON.parse(saved) : null;
+  } catch {
+    return null;
+  }
+};
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [users, setUsers] = useState<User[]>([]);
+  const [user, setUser]           = useState<User | null>(readStoredUser);
+  const [users, setUsers]         = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Load users from localStorage or use initial users
-    const savedUsers = localStorage.getItem('autonova_users');
-    if (savedUsers) {
-      setUsers(JSON.parse(savedUsers));
-    } else {
-      setUsers(initialUsers);
-      localStorage.setItem('autonova_users', JSON.stringify(initialUsers));
-    }
-
-    // Check if user is already logged in
-    const savedUser = localStorage.getItem('autonova_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
+    const stored = readStoredUser();
+    if (stored) loadUsersForRole(stored.role);
   }, []);
 
-  const login = (email: string, password: string): boolean => {
-    const foundUser = users.find(
-      (u) => u.email === email && u.password === password && u.isActive
-    );
-    if (foundUser) {
-      setUser(foundUser);
-      localStorage.setItem('autonova_user', JSON.stringify(foundUser));
-      return true;
+  const loadUsersForRole = async (role: UserRole) => {
+    try {
+      if (role === 'admin') {
+        const data = await userService.getAll();
+        setUsers(data.map(mapUser));
+      } else {
+        // Recepcionista y Mecánico solo necesitan ver mecánicos (dropdown de citas)
+        const data = await userService.getMechanics();
+        setUsers(data.map(mapUser));
+      }
+    } catch {
+      setUsers([]);
     }
-    return false;
+  };
+
+  const loadUsers = async () => {
+    const stored = readStoredUser();
+    await loadUsersForRole(stored?.role ?? 'admin');
+  };
+
+  const login = async (email: string, password: string): Promise<boolean> => {
+    setIsLoading(true);
+    try {
+      const result = await authService.login(email, password);
+      localStorage.setItem('autonova_token', result.token);
+
+      const loggedUser: User = {
+        id: result.userId, name: result.name,
+        email: result.email, role: mapRole(result.role), isActive: true,
+      };
+
+      setUser(loggedUser);
+      localStorage.setItem('autonova_current_user', JSON.stringify(loggedUser));
+      await loadUsersForRole(loggedUser.role);
+      return true;
+    } catch {
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('autonova_user');
+    setUsers([]);
+    localStorage.removeItem('autonova_token');
+    localStorage.removeItem('autonova_current_user');
   };
 
-  const addUser = (newUser: Omit<User, 'id'>) => {
-    const user: User = {
-      ...newUser,
-      id: Date.now().toString(),
-    };
-    const updatedUsers = [...users, user];
-    setUsers(updatedUsers);
-    localStorage.setItem('autonova_users', JSON.stringify(updatedUsers));
+  const addUser = async (
+    name: string, email: string, password: string, role: UserRole
+  ): Promise<void> => {
+    await userService.create(name, email, password, mapRoleToBackend(role));
+    await loadUsers();
   };
 
-  const updateUser = (id: string, updates: Partial<User>) => {
-    const updatedUsers = users.map((u) =>
-      u.id === id ? { ...u, ...updates } : u
-    );
-    setUsers(updatedUsers);
-    localStorage.setItem('autonova_users', JSON.stringify(updatedUsers));
+  const updateUser = async (id: string, updates: Partial<User>): Promise<void> => {
+    if (updates.isActive === false) await userService.deactivate(id);
+    else if (updates.isActive === true) await userService.activate(id);
+    await loadUsers();
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, users, addUser, updateUser }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, login, logout, users, loadUsers, addUser, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -115,8 +138,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 }
