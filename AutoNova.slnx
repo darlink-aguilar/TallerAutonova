@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="AutoNova.API/AutoNova.API.csproj" />
+  <Project Path="AutoNova.DataAccess/AutoNova.DataAccess.csproj" />
+  <Project Path="AutoNova.Domain/AutoNova.Domain.csproj" />
+</Solution>
