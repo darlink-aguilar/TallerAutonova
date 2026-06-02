@@ -19,6 +19,30 @@ namespace TallerAutonova.API.Mappings
                 //.ForMember(dest => dest.ReceptionistName,
                 //    opt => opt.MapFrom(src => src.Receptionist.Name))
                 ;
+
+            CreateMap<AppointmentRequestDTO, Appointment>();
+            CreateMap<Appointment, AppointmentResponseDTO>()
+                .ForMember(
+                    dest => dest.State,
+                    opt => opt.MapFrom(src =>
+                    src.State.ToString()))
+                .ForMember(
+                    dest => dest.VehicleId,
+                    opt => opt.MapFrom(src =>
+                    src.Vehicle.Id))
+                .ForMember(
+                    dest => dest.MechanicId,
+                    opt => opt.MapFrom(src =>
+                    src.Mechanic.Id)); ;
+
+            CreateMap<VehicleRequestDTO, Vehicle>();
+            CreateMap<Vehicle, VehicleResponseDTO>()
+                .ForMember(
+                    dest => dest.OwnerName,
+                    opt => opt.MapFrom(src => src.Owner.Name))
+                .ForMember(
+                    dest => dest.OwnerPhone,
+                    opt => opt.MapFrom(src => src.Owner.Phone));
         }
     }
 }

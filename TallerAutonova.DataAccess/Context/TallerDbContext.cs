@@ -15,6 +15,8 @@ namespace TallerAutonova.DataAccess.Context
 
         public DbSet<Mechanic> Mechanics => Set<Mechanic>();
         public DbSet<Receptionist> Receptionists => Set<Receptionist>();
+        public DbSet<Vehicle> Vehicles => Set<Vehicle>();
+        public DbSet<Owner> Owners => Set<Owner>();
 
 
 
@@ -75,6 +77,59 @@ namespace TallerAutonova.DataAccess.Context
                 //      .WithMany(a => a.Users) // Un administrador crea muchos usuarios
                 //      .HasForeignKey(r => r.AdministratorId) // La clave foránea en la tabla de usuario
                 //      .OnDelete(DeleteBehavior.Cascade); 
+            });
+
+            modelBuilder.Entity<Vehicle>(entity =>
+            {
+                entity.HasKey(v => v.Id);
+
+                entity.Property(v => v.Brand)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(v => v.Plate)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(v => v.Model)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(v => v.Type)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(v => v.Year)
+                    .IsRequired();
+
+                entity.Property(v => v.State)
+                    .IsRequired();
+
+                entity.HasIndex(v => v.Plate)
+                    .IsUnique();
+
+                entity.HasOne(v => v.Owner)
+                    .WithMany(o => o.Vehicles)
+                    .HasForeignKey(v => v.OwnerId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                    /*.HasForeignKey(v => v.OwnerId)
+                    .OnDelete(DeleteBehavior.Restrict)*/;
+
+                entity.HasIndex(p => new { p.Plate, p.OwnerId })
+            .IsUnique();
+            });
+
+            modelBuilder.Entity<Owner>(entity =>
+            {
+                entity.HasKey(o => o.Id);
+
+                entity.Property(o => o.Name)
+                    .IsRequired()
+                    .HasMaxLength(120);
+
+                entity.Property(o => o.Phone)
+                    .IsRequired()
+                    .HasMaxLength(20);
             });
 
         }

@@ -4,7 +4,6 @@ using TallerAutonova.DataAccess.Repositories;
 using TallerAutonova.Domain.Interfaces.Repositories;
 using TallerAutonova.Domain.Interfaces.Services;
 using TallerAutonova.Domain.Services;
-using System.ComponentModel.Design;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +15,15 @@ builder.Services.AddDbContext<TallerDbContext>(options =>
 // ── Repositories ──
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IMechanicRepository, MechanicRepository>();
+builder.Services.AddScoped<IVehiclesRepository, VehicleRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
 
 
 // ── Services ──
 builder.Services.AddScoped<IMechanicService, MechanicService>();
+builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 
 // ── AutoMapper ──
