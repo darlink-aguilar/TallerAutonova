@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
   # Taller Autonova
 
@@ -9,3 +10,6 @@
 
   Run `npm run dev` to start the development server.
   
+=======
+# TallerAutonova
+>>>>>>> d544ba309e42580d03cce4c16a64bc60e87ab18b
