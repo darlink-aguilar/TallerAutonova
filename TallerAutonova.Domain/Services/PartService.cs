@@ -21,7 +21,6 @@ namespace TallerAutonova.Domain.Services
             _stockSubject = stockSubject;
         }
 
-        // Part CRUD
         public async Task<Part?> GetByIdAsync(int id)
             => await _partRepository.GetByIdAsync(id);
 
@@ -43,20 +42,28 @@ namespace TallerAutonova.Domain.Services
         public async Task DeleteAsync(int id)
             => await _partRepository.DeleteAsync(id);
 
-        // Stock management (Observer)
         public async Task<bool> ReduceStockAsync(int partId, int quantity)
         {
-            var hasStock = await _partRepository.HasStockAvailableAsync(partId, quantity);
-            if (!hasStock) return false;
-
+            // Obtener el repuesto
             var repuesto = await _partRepository.GetByIdAsync(partId);
-            if (repuesto == null) return false;
 
+            // Si no existe, retornar false
+            if (repuesto == null)
+                return false;
+
+            // Si no hay stock suficiente, retornar false
+            if (repuesto.Quantity < quantity)
+                return false;
+
+            // Reducir stock
             repuesto.Quantity -= quantity;
             await _partRepository.UpdateAsync(repuesto);
 
-            // Observer: Notificar si stock bajo
-            _stockSubject.Notify(repuesto);
+            // Notificar al Observer si el stock está por debajo del mínimo
+            if (repuesto.Quantity <= repuesto.MinStock)
+            {
+                _stockSubject.Notify(repuesto);
+            }
 
             return true;
         }
@@ -64,7 +71,8 @@ namespace TallerAutonova.Domain.Services
         public async Task<bool> IncreaseStockAsync(int partId, int quantity)
         {
             var repuesto = await _partRepository.GetByIdAsync(partId);
-            if (repuesto == null) return false;
+            if (repuesto == null)
+                return false;
 
             repuesto.Quantity += quantity;
             await _partRepository.UpdateAsync(repuesto);
@@ -79,9 +87,15 @@ namespace TallerAutonova.Domain.Services
         }
 
         public async Task<IEnumerable<Part>> GetLowStockPartsAsync()
-            => await _partRepository.GetLowStockPartsAsync();
+        {
+            var allParts = await _partRepository.GetAllAsync();
+            return allParts.Where(p => p.Quantity <= p.MinStock).ToList();
+        }
 
         public async Task<IEnumerable<Part>> GetPartsByAdministratorAsync(int administratorId)
-            => await _partRepository.GetByAdministratorIdAsync(administratorId);
+        {
+            var allParts = await _partRepository.GetAllAsync();
+            return allParts.Where(p => p.AdministratorId == administratorId).ToList();
+        }
     }
 }

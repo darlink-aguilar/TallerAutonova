@@ -7,9 +7,5 @@ namespace TallerAutonova.Domain.Interfaces.Repositories
         // Specific queries
         Task<IEnumerable<Part>> GetLowStockPartsAsync();
         Task<IEnumerable<Part>> GetByAdministratorIdAsync(int administratorId);
-
-        // Stock management
-        Task UpdateStockAsync(int partId, int newQuantity);
-        Task<bool> HasStockAvailableAsync(int partId, int requestedQuantity);
     }
 }
