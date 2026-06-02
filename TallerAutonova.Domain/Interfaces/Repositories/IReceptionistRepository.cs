@@ -6,7 +6,7 @@ namespace TallerAutonova.Domain.Interfaces.Repositories
     {
 
         // Verifica si un mecánico tiene una cita activa
-        Task<bool> IsMechanicOccupiedAsync(int mechanicId, DateTime dateTime, int? excludeAppointmentId = null);
+        Task<bool> IsMechanicOccupiedAsync(int mechanicId, DateOnly date, TimeOnly time, int? excludeAppointmentId = null);
 
         // Obtiene todas las citas del sistema ordenadas cronológicamente por fecha y hora
         Task<IEnumerable<Appointment>> GetAllAppointmentsOrderedAsync();
