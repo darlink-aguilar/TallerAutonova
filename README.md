@@ -110,15 +110,16 @@ Iniciar el servidor de desarrollo:
 ## Evidencias del MVP
 
 ### Inicio
-![Inicio](Images/Inicio.jpeg)
+![Inicio](images/Inicio.jpeg)
 
 ### Administrador
-![Administrador](Images/Admin.jpeg)
+![Administrador](images/Admin.jpeg)
 
 ### Mecánico
-![Mecánico](Images/Mecanico.jpeg)
+![Mecánico](images/Mecanico.jpeg)
 
 ### Recepcionista
+
 ![Recepcionista](Images/Recep.jpeg)
 ## Documentacion
 
@@ -133,4 +134,7 @@ Iniciar el servidor de desarrollo:
 
 
 
+
+
+![Recepcionista](images/Recep.jpeg)
 
