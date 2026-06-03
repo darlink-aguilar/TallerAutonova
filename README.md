@@ -120,3 +120,17 @@ Iniciar el servidor de desarrollo:
 
 ### Recepcionista
 ![Recepcionista](Images/Recep.jpeg)
+## Documentacion
+
+### StoryMapping
+![Story](Story.jpg)
+
+### Diagrama de clases
+![Diagrama](Diagrama.png)
+
+### Historias de Usuario
+[Historias de Usuario - Trello](https://trello.com/invite/b/69d5946297c19b5ffc56a793/ATTIe77a64bd9df305f7a839f7e607536a4740B1369D/taller-autonova)
+
+
+
+
