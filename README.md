@@ -110,23 +110,23 @@ Iniciar el servidor de desarrollo:
 ## Evidencias del MVP
 
 ### Inicio
-![Inicio](Images/Inicio.jpeg)
+![Inicio](images/Inicio.jpeg)
 
 ### Administrador
-![Administrador](Images/Admin.jpeg)
+![Administrador](images/Admin.jpeg)
 
 ### Mecánico
-![Mecánico](Images/Mecanico.jpeg)
+![Mecánico](images/Mecanico.jpeg)
 
 ### Recepcionista
-![Recepcionista](Images/Recep.jpeg)
+![Recepcionista](images/Recep.jpeg)
 ## Documentacion
 
 ### StoryMapping
-![Story](Story.jpg)
+![Story](images/Story.jpg)
 
 ### Diagrama de clases
-![Diagrama](Diagrama.png)
+![Diagrama](images/Diagrama.png)
 
 ### Historias de Usuario
 [Historias de Usuario - Trello](https://trello.com/invite/b/69d5946297c19b5ffc56a793/ATTIe77a64bd9df305f7a839f7e607536a4740B1369D/taller-autonova)
